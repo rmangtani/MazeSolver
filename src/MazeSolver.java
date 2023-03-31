@@ -5,6 +5,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class MazeSolver {
     private Maze maze;
@@ -29,7 +30,21 @@ public class MazeSolver {
     public ArrayList<MazeCell> getSolution() {
         // TODO: Get the solution from the maze
         // Should be from start to end cells
-        return null;
+        ArrayList<MazeCell> solution = new ArrayList<MazeCell>();
+        MazeCell currentCell = maze.getEndCell();
+        solution.add(currentCell);
+        while (currentCell != maze.getStartCell()) {
+            solution.add(currentCell.getParent());
+            currentCell = currentCell.getParent();
+        }
+        Stack<MazeCell> inOrder = new Stack<MazeCell>();
+        while (!solution.isEmpty()) {
+            inOrder.push(solution.remove(0));
+        }
+        while (!inOrder.isEmpty()) {
+            solution.add(inOrder.pop());
+        }
+        return solution;
     }
 
     /**
@@ -38,7 +53,41 @@ public class MazeSolver {
      */
     public ArrayList<MazeCell> solveMazeDFS() {
         // TODO: Use DFS to solve the maze
-        // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+        Stack<MazeCell> cellsToVisit = new Stack<MazeCell>();
+        MazeCell currentCell = maze.getStartCell();
+        while (currentCell!=maze.getEndCell()) {
+            // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
+            // NORTH
+            MazeCell nextCell = null;
+            // CALL IS VALID CELL INSTEAD OF THESE TWO IF STATEMENTS
+            if (maze.isValidCell(currentCell.getRow()-1, currentCell.getCol())) {
+                nextCell = maze.getCell(currentCell.getRow()-1, currentCell.getCol());
+                nextCell.setParent(currentCell);
+                cellsToVisit.add(nextCell);
+                nextCell.setExplored(true);
+            }
+            // EAST
+            if (maze.isValidCell(currentCell.getRow(), currentCell.getCol()+1)) {
+                nextCell = maze.getCell(currentCell.getRow(), currentCell.getCol()+1);
+                nextCell.setParent(currentCell);
+                cellsToVisit.add(nextCell);
+                nextCell.setExplored(true);
+            }
+            // SOUTH
+            if (maze.isValidCell(currentCell.getRow() + 1, currentCell.getCol())) {
+                nextCell = maze.getCell(currentCell.getRow() + 1, currentCell.getCol());
+                nextCell.setParent(currentCell);
+                cellsToVisit.add(nextCell);
+                nextCell.setExplored(true);
+            }
+            // WEST
+            if (maze.isValidCell(currentCell.getRow(), currentCell.getCol()-1)) {
+                nextCell = maze.getCell(currentCell.getRow(), currentCell.getCol()-1);
+                nextCell.setParent(currentCell);
+                cellsToVisit.add(nextCell);
+                nextCell.setExplored(true);
+            }
+        }
         return null;
     }
 
