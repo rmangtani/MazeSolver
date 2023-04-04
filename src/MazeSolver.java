@@ -57,9 +57,8 @@ public class MazeSolver {
         MazeCell currentCell = maze.getStartCell();
         while (currentCell!=maze.getEndCell()) {
             // Explore the cells in the order: NORTH, EAST, SOUTH, WEST
-            // NORTH
             MazeCell nextCell = null;
-            // CALL IS VALID CELL INSTEAD OF THESE TWO IF STATEMENTS
+            // NORTH
             if (maze.isValidCell(currentCell.getRow()-1, currentCell.getCol())) {
                 nextCell = maze.getCell(currentCell.getRow()-1, currentCell.getCol());
                 nextCell.setParent(currentCell);
@@ -87,8 +86,9 @@ public class MazeSolver {
                 cellsToVisit.add(nextCell);
                 nextCell.setExplored(true);
             }
+            currentCell = cellsToVisit.pop();
         }
-        return null;
+        return getSolution();
     }
 
     /**
